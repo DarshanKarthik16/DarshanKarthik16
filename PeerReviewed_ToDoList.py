@@ -52,20 +52,28 @@ class TodoListApp:
         self.todo_list = TodoList()
 
         self.task_entry = tk.Entry(master, width=40, font=("Helvetica", 12))
-        self.task_entry.grid(row=0, column=0, padx=10, pady=10)
-        self.task_entry.bind("<Return>", self.add_task_enter)
+        self.task_entry.grid(row=0, column=0, padx=10, pady=10, sticky="ew")
 
-        self.add_button = tk.Button(master, text="Add Task", command=self.add_task)
-        self.add_button.grid(row=0, column=1, padx=10, pady=10)
+        self.add_button = tk.Button(master, text="Add Task", command=self.add_task, bg="#4CAF50", fg="white", relief="raised")
+        self.add_button.grid(row=0, column=1, padx=10, pady=10, sticky="ew")
 
         self.listbox = tk.Listbox(master, width=60, height=15, font=("Helvetica", 12))
-        self.listbox.grid(row=1, column=0, columnspan=2, padx=10, pady=10)
+        self.listbox.grid(row=1, column=0, columnspan=2, padx=10, pady=10, sticky="nsew")
 
-        self.remove_button = tk.Button(master, text="Remove Task", command=self.remove_task)
-        self.remove_button.grid(row=2, column=0, padx=10, pady=10)
+        self.remove_button = tk.Button(master, text="Remove Task", command=self.remove_task, bg="#f44336", fg="white", relief="raised")
+        self.remove_button.grid(row=2, column=0, padx=10, pady=10, sticky="ew")
 
-        self.refresh_button = tk.Button(master, text="Refresh", command=self.refresh_tasks)
-        self.refresh_button.grid(row=2, column=1, padx=10, pady=10)
+        self.refresh_button = tk.Button(master, text="Refresh", command=self.refresh_tasks, bg="#2196F3", fg="white", relief="raised")
+        self.refresh_button.grid(row=2, column=1, padx=10, pady=10, sticky="ew")
+
+        # Configure grid weights for resizing
+        master.grid_rowconfigure(1, weight=1)
+        master.grid_columnconfigure(0, weight=1)
+
+        # Configure listbox scrollbar
+        scrollbar = tk.Scrollbar(master, orient="vertical", command=self.listbox.yview)
+        scrollbar.grid(row=1, column=2, sticky="ns")
+        self.listbox.config(yscrollcommand=scrollbar.set)
 
     def add_task(self):
         task = self.task_entry.get()
@@ -75,9 +83,6 @@ class TodoListApp:
             self.task_entry.delete(0, tk.END)
         else:
             messagebox.showwarning("Warning", "Please enter a task.")
-
-    def add_task_enter(self, event):
-        self.add_task()
 
     def remove_task(self):
         selected_task = self.listbox.curselection()
@@ -98,7 +103,8 @@ class TodoListApp:
 
 def main():
     root = tk.Tk()
-    root.geometry("500x400")  # Set window size
+    root.geometry("600x400")  # Set window size
+    root.configure(bg="#F0F0F0")  # Set background color
     todo_app = TodoListApp(root)
     root.mainloop()
 
