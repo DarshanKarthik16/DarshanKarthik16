@@ -19,13 +19,17 @@ class ContactBookApp:
         self.add_button = tk.Button(self.root, text="Add Contact", command=self.add_contact)
         self.add_button.grid(row=1, column=0, padx=10, pady=5, sticky="ew")
         
+        # Edit Contact Button
+        self.edit_button = tk.Button(self.root, text="Edit Contact", command=self.edit_contact)
+        self.edit_button.grid(row=2, column=0, padx=10, pady=5, sticky="ew")
+        
         # Delete Contact Button
         self.delete_button = tk.Button(self.root, text="Delete Contact", command=self.delete_contact)
-        self.delete_button.grid(row=2, column=0, padx=10, pady=5, sticky="ew")
+        self.delete_button.grid(row=3, column=0, padx=10, pady=5, sticky="ew")
         
         # Exit Button
         self.exit_button = tk.Button(self.root, text="Exit", command=self.root.destroy)
-        self.exit_button.grid(row=3, column=0, padx=10, pady=5, sticky="ew")
+        self.exit_button.grid(row=4, column=0, padx=10, pady=5, sticky="ew")
         
     def add_contact(self):
         name = tk.simpledialog.askstring("Add Contact", "Enter Name:")
@@ -34,6 +38,18 @@ class ContactBookApp:
             self.update_contact_list()
         else:
             messagebox.showinfo("Add Contact", "Invalid name. Please enter a valid name.")
+    
+    def edit_contact(self):
+        selected_index = self.contact_listbox.curselection()
+        if selected_index:
+            index = selected_index[0]
+            old_name = self.contacts[index]
+            new_name = tk.simpledialog.askstring("Edit Contact", "Enter New Name:", initialvalue=old_name)
+            if new_name:
+                self.contacts[index] = new_name
+                self.update_contact_list()
+        else:
+            messagebox.showinfo("Edit Contact", "Please select a contact to edit.")
     
     def delete_contact(self):
         selected_index = self.contact_listbox.curselection()
